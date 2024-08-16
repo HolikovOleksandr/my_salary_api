@@ -1,38 +1,15 @@
 const errorHandler = (err, req, res, next) => {
-  console.error(err.stack);
+  console.log("::: [Middleware] Error Hadnling");
+  const errStatus = err.statusCode || 500;
+  const errMsg = err.message || "Something went wrong";
 
-  switch (err.name) {
-    case "ValidationError":
-      return res.status(400).json({
-        success: false,
-        message: "Validation error",
-        errors: Object.values(err.errors).map((error) => error.message),
-      });
+  if (res.headersSent) return next(err);
 
-    case "CastError":
-      return res.status(400).json({
-        success: false,
-        message: "Invalid data format",
-      });
-
-    case "JsonWebTokenError":
-      return res.status(401).json({
-        success: false,
-        message: "Invalid or missing token",
-      });
-
-    case "TokenExpiredError":
-      return res.status(401).json({
-        success: false,
-        message: "Token expired",
-      });
-
-    default:
-      return res.status(500).json({
-        success: false,
-        message: "Something broke!",
-      });
-  }
+  res.status(errStatus).json({
+    success: false,
+    status: errStatus,
+    message: errMsg,
+  });
 };
 
 export default errorHandler;

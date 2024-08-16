@@ -2,6 +2,8 @@ import User from "./user.schema.js";
 import { generateToken } from "../auth/auth.service.js";
 
 export const getAllUsers = async (req, res, next) => {
+  console.log("==> [Method] Find All Users");
+
   try {
     const data = await User.find().select("-password");
     res.status(200).json({ succsses: true, data });
@@ -11,17 +13,34 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const createUser = async (req, res, next) => {
+  console.log("==> Method User Create");
+
   try {
     const newUser = new User(req.body);
     await newUser.save();
 
-    res.status(201).json({ succsses: true, data: newUser });
+    const data = newUser.toObject();
+    delete data.password;
+
+    res.status(201).json({ succsses: true, data });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteAllUsers = async (req, res, next) => {
+  console.log("==> [Method] Delete All Users");
+
+  try {
+    const users = await User.deleteMany({ role: "user" });
+    res.status(200).json({ success: true, deletedCount: users.deletedCount });
   } catch (error) {
     next(error);
   }
 };
 
 export const deleteUserById = async (req, res, next) => {
+  console.log("==> [Method] Delete User By Id");
   const { id } = req.params;
 
   try {
@@ -44,6 +63,7 @@ export const deleteUserById = async (req, res, next) => {
 };
 
 export const findUserById = async (req, res, next) => {
+  console.log("==> [Method] Find User By Id");
   const { id } = req.params;
 
   try {
@@ -62,6 +82,7 @@ export const findUserById = async (req, res, next) => {
 };
 
 export const updateUserById = async (req, res, next) => {
+  console.log("==> [Method] Update User By Id");
   const { id } = req.params;
   const { name, email } = req.body;
 
@@ -84,7 +105,8 @@ export const updateUserById = async (req, res, next) => {
   }
 };
 
-export const authenticateUser = async (req, res, next) => {
+export const signInUser = async (req, res, next) => {
+  console.log("==> [Method] Sign In User");
   const { email, password } = req.body;
 
   try {
