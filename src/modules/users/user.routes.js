@@ -10,24 +10,20 @@ import {
 } from "./user.controller.js";
 import adminAccess from "../../middlewares/adminAccess.js";
 import ownerAndAdminAccess from "../../middlewares/ownerAndAdminAccess.js";
-import authenticateUser from "../../middlewares/authenticateUser.js";
+import authUser from "../../middlewares/authenticateUser.js";
 
 const userRouter = Router();
 
 userRouter.get("/", getAllUsers);
 userRouter.get("/:id", findUserById);
 
-userRouter.post("/", authenticateUser, adminAccess, createUser);
-userRouter.post("/login", signInUser);
+userRouter.post("/signin", signInUser);
+userRouter.post("/singup", createUser);
+userRouter.post("/", authUser, adminAccess, createUser);
 
-userRouter.patch("/:id", authenticateUser, ownerAndAdminAccess, updateUserById);
+userRouter.patch("/:id", authUser, ownerAndAdminAccess, updateUserById);
 
-userRouter.delete("/", authenticateUser, adminAccess, deleteAllUsers);
-userRouter.delete(
-  "/:id",
-  authenticateUser,
-  ownerAndAdminAccess,
-  deleteUserById
-);
+userRouter.delete("/", authUser, adminAccess, deleteAllUsers);
+userRouter.delete("/:id", authUser, ownerAndAdminAccess, deleteUserById);
 
 export default userRouter;

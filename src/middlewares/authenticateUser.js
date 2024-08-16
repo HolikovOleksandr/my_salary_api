@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../modules/users/user.schema.js";
 
-const authenticateUser = async (req, res, next) => {
+const authUser = async (req, res, next) => {
   console.log("::: [Middleware] User Authenticate");
 
   const authHeader = req.headers.authorization;
@@ -29,4 +29,4 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
-export default authenticateUser;
+export default authUser;
