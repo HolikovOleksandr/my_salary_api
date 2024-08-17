@@ -1,5 +1,7 @@
+import chalk from "chalk";
+
 const ownerAndAdminAccess = async (req, res, next) => {
-  console.log("::: [Middleware] Owner Access");
+  console.log(chalk.yellow.bold("::: [Middleware]"), "Owner Access");
 
   try {
     const userId = req.user.id;

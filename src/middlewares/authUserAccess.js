@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import User from "../modules/users/user.schema.js";
+import chalk from "chalk";
 
-const authUser = async (req, res, next) => {
-  console.log("::: [Middleware] User Authenticate");
+const authUserAccess = async (req, res, next) => {
+  console.log(chalk.yellow.bold("::: [Middleware]"), "User Authenticate");
 
   const authHeader = req.headers.authorization;
 
@@ -29,4 +30,4 @@ const authUser = async (req, res, next) => {
   }
 };
 
-export default authUser;
+export default authUserAccess;

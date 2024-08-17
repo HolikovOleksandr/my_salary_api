@@ -9,3 +9,8 @@ export const generateToken = (user) => {
   if (!secret) throw new Error("Jwt secret is not defined");
   return jwt.sign(payload, secret, { expiresIn });
 };
+
+export const verifyToken = (token) => {
+  const withoutBearer = token.split(" ")[1];
+  return jwt.verify(withoutBearer, process.env.JWT_SECRET);
+};
